@@ -353,11 +353,22 @@
 - (NSString *)popUpSuffixForlineGraph:(BEMSimpleLineGraphView *)graph;
 
 /** Optional method to always display some of the pop up labels on the graph.
- @see alwaysDisplayPopUpLabels must be set to YES for this method to have any affect.
+ @see alwaysDisplayPopUpLabels must be set to YES for this method to have any effect.
  @param graph The graph object requesting the total number of points.
  @param index The index from left to right of the points on the graph. The first value for the index is 0.
  @return Return YES if you want the popup label to be displayed for this index. */
 - (BOOL)lineGraph:(BEMSimpleLineGraphView *)graph alwaysDisplayPopUpAtIndex:(CGFloat)index;
+
+/** Optional method to always display some dots on the graph.
+ @see alwaysDisplayDots must be set to YES for this method to have any effect.
+ @param index The index from left to right of the points on the graph. The first value for the index is 0.
+ @return YES if a pop up label should be displayed for this index. */
+- (BOOL)lineGraph:(BEMSimpleLineGraphView *)graph alwaysDisplayDotAtIndex:(NSInteger)index;
+
+/** Optional method to alter the color of dots on the graph.
+ @param index The index from left to right of the points on the graph. The first value for the index is 0.
+ @return a color or nil. A value of nil defaults the dot color to \p colorPoint */
+- (UIColor*)lineGraph:(BEMSimpleLineGraphView *)graph colorForDotAtIndex:(NSInteger)index;
 
 /** Optional method to set the maximum value of the Y-Axis. If not implemented, the maximum value will be the biggest point of the graph.
  @param graph The graph object requesting the maximum value.

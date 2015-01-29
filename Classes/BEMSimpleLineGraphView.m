@@ -132,7 +132,7 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
     _colorTop = [UIColor colorWithRed:0 green:122.0/255.0 blue:255/255 alpha:1];
     _colorLine = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1];
     _colorBottom = [UIColor colorWithRed:0 green:122.0/255.0 blue:255/255 alpha:1];
-    _colorPoint = [UIColor whiteColor];
+    _colorPoint = [UIColor colorWithWhite:1.0 alpha:0.7];
     _colorTouchInputLine = [UIColor grayColor];
     _colorBackgroundPopUplabel = [UIColor whiteColor];
     _alphaTouchInputLine = 0.2;
@@ -398,7 +398,10 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
             circleDot.tag = i+ DotFirstTag100;
             circleDot.alpha = 0;
             circleDot.absoluteValue = dotValue;
-            circleDot.Pointcolor = self.colorPoint;
+            UIColor* pointColor = self.colorPoint;
+            if ([self.delegate respondsToSelector:@selector(lineGraph:colorForDotAtIndex:)])
+                pointColor = [self.delegate lineGraph:self colorForDotAtIndex:i] ?: pointColor;
+            circleDot.Pointcolor = pointColor;
             
             [self addSubview:circleDot];
             
@@ -411,15 +414,17 @@ typedef NS_ENUM(NSInteger, BEMInternalTags)
             }
             
             // Dot entrance animation
+            BOOL shouldDisplayDot = self.alwaysDisplayDots;
+            if (shouldDisplayDot && [self.delegate respondsToSelector:@selector(lineGraph:alwaysDisplayDotAtIndex:)])
+                shouldDisplayDot = [self.delegate lineGraph:self alwaysDisplayDotAtIndex:i];
+
             if (self.animationGraphEntranceTime == 0) {
-                if (self.alwaysDisplayDots == NO) {
-                    circleDot.alpha = 0;  // never reach here
-                } else circleDot.alpha = 0.7;
+                circleDot.alpha = shouldDisplayDot ? 1.0 : 0;
             } else {
                 [UIView animateWithDuration:(float)self.animationGraphEntranceTime/numberOfPoints delay:(float)i*((float)self.animationGraphEntranceTime/numberOfPoints) options:UIViewAnimationOptionCurveLinear animations:^{
-                    circleDot.alpha = 0.7;
+                    circleDot.alpha = 1.0;
                 } completion:^(BOOL finished) {
-                    if (self.alwaysDisplayDots == NO) {
+                    if (!shouldDisplayDot) {
                         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
                             circleDot.alpha = 0;
                         } completion:nil];
