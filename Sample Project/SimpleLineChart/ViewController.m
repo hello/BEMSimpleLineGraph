@@ -64,7 +64,7 @@
     self.myGraph.enableBezierCurve = YES;
     self.myGraph.enableYAxisLabel = YES;
     self.myGraph.autoScaleYAxis = YES;
-    self.myGraph.alwaysDisplayDots = NO;
+    self.myGraph.alwaysDisplayDots = YES;
     self.myGraph.enableReferenceXAxisLines = YES;
     self.myGraph.enableReferenceYAxisLines = YES;
     self.myGraph.enableReferenceAxisFrame = YES;
@@ -172,6 +172,22 @@
 - (NSString *)lineGraph:(BEMSimpleLineGraphView *)graph labelOnXAxisForIndex:(NSInteger)index {
     NSString *label = [self.arrayOfDates objectAtIndex:index];
     return [label stringByReplacingOccurrencesOfString:@" " withString:@"\n"];
+}
+
+- (UIColor *)lineGraph:(BEMSimpleLineGraphView *)graph colorForDotAtIndex:(NSInteger)index {
+    switch (index) {
+        case 0:
+            return [UIColor redColor];
+
+        case 2:
+            return [UIColor blueColor];
+        default:
+            return nil;
+    }
+}
+
+- (BOOL)lineGraph:(BEMSimpleLineGraphView *)graph alwaysDisplayDotAtIndex:(NSInteger)index {
+    return index % 2 == 0;
 }
 
 - (void)lineGraph:(BEMSimpleLineGraphView *)graph didTouchGraphWithClosestIndex:(NSInteger)index {
