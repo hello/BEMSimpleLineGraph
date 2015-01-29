@@ -279,6 +279,8 @@
 /// Color of the pop up label's background displayed when the user touches the graph.
 @property (strong, nonatomic) UIColor *colorBackgroundPopUplabel;
 
+/// Color of the pop up label's foreground displayed when the user touches the graph.
+@property (strong, nonatomic) UIColor *colorForegroundPopUpLabel;
 
 @end
 
@@ -351,6 +353,12 @@
  @param graph The graph object requesting the total number of points.
  @return The suffix to append to the popup report. */
 - (NSString *)popUpSuffixForlineGraph:(BEMSimpleLineGraphView *)graph;
+
+/** Optional method to set the text color of the pop up labels on the graph.
+ @param graph The graph object requesting the pop up label color.
+ @param index The index from left to right of the points on the graph. The first value for the index is 0.
+ @return A color or nil. When nil, the default value of \p colorForegroundPopUpLabel is used */
+- (UIColor *)lineGraph:(BEMSimpleLineGraphView *)graph colorForPopUpAtIndex:(NSInteger)index;
 
 /** Optional method to always display some of the pop up labels on the graph.
  @see alwaysDisplayPopUpLabels must be set to YES for this method to have any affect.
