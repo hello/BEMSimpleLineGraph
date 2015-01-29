@@ -65,10 +65,12 @@
     self.myGraph.enableYAxisLabel = YES;
     self.myGraph.autoScaleYAxis = YES;
     self.myGraph.alwaysDisplayDots = YES;
+    self.myGraph.alwaysDisplayPopUpLabels = YES;
     self.myGraph.enableReferenceXAxisLines = YES;
     self.myGraph.enableReferenceYAxisLines = YES;
     self.myGraph.enableReferenceAxisFrame = YES;
     self.myGraph.animationGraphStyle = BEMLineAnimationDraw;
+    self.myGraph.colorBackgroundPopUplabel = [UIColor clearColor];
     
     //setup initial selectet segment
     self.curveChoice.selectedSegmentIndex = self.myGraph.enableBezierCurve;
@@ -213,6 +215,16 @@
 - (void)lineGraphDidFinishLoading:(BEMSimpleLineGraphView *)graph {
     self.labelValues.text = [NSString stringWithFormat:@"%i", [[self.myGraph calculatePointValueSum] intValue]];
     self.labelDates.text = [NSString stringWithFormat:@"between %@ and %@", [self.arrayOfDates firstObject], [self.arrayOfDates lastObject]];
+}
+
+- (BOOL)lineGraph:(BEMSimpleLineGraphView *)graph alwaysDisplayPopUpAtIndex:(CGFloat)index {
+    return ((int)index % 6) == 0;
+}
+
+- (UIColor *)lineGraph:(BEMSimpleLineGraphView *)graph colorForPopUpAtIndex:(NSInteger)index {
+    if (index % 3 == 0)
+        return [UIColor colorWithWhite:0.3 alpha:1.0];
+    return nil;
 }
 
 @end
